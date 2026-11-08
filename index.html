@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>George Alaneme</title>
+<meta name="description" content="Data analytics portfolio of George Alaneme, Information Technology student at Carleton University in Ottawa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Overpass+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a fixed navy "route sign" rail on the left (name, stops = sections, contact), a working "transit lab" up top in the main column, then projects, experience, skills. Signage yellow marks what is active. */
+:root{
+  --bg:#F4F6F9; --panel:#FFFFFF; --ink:#0F1B2B; --muted:#586577; --rule:#DCE2EA;
+  --rail:#10264A; --rail-ink:#EAF0F8; --rail-muted:#9FB1CA; --rail-line:#2A4470;
+  --signal:#FFC531; --signal-ink:#1A1400; --accent:#1C5BC4; --accent-soft:#E6EEFB; --bar:#B9C5D6;
+  --display:"Overpass","Trebuchet MS",Helvetica,Arial,sans-serif;
+  --mono:"Overpass Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A111D; --panel:#101A2A; --ink:#E5ECF5; --muted:#93A2B7; --rule:#1F2D43;
+  --rail:#0C1C37; --rail-ink:#EAF0F8; --rail-muted:#8EA2BF; --rail-line:#24406B;
+  --accent:#86B4FF; --accent-soft:#16264A; --bar:#34475F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A111D; --panel:#101A2A; --ink:#E5ECF5; --muted:#93A2B7; --rule:#1F2D43;
+  --rail:#0C1C37; --rail-ink:#EAF0F8; --rail-muted:#8EA2BF; --rail-line:#24406B;
+  --accent:#86B4FF; --accent-soft:#16264A; --bar:#34475F; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--display);font-size:17px;line-height:1.6}
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:3px}
+h1,h2,h3{line-height:1.08;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:320px minmax(0,1fr);min-height:100%;background:linear-gradient(to right,var(--rail) 320px,var(--bg) 320px)}
+.rail{background:var(--rail);color:var(--rail-ink);position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto;
+  display:flex;flex-direction:column;gap:28px;padding:36px 28px 28px max(28px,env(safe-area-inset-left,0px))}
+.rail .who{display:grid;gap:10px}
+.route-badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--rail-muted)}
+.route-badge b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--signal);color:var(--signal-ink);font-family:var(--display);font-size:15px;letter-spacing:0}
+.rail h1{font-size:44px;font-weight:900;letter-spacing:-.02em;color:#FFFFFF}
+.rail .tag{color:var(--rail-ink);font-size:17px}
+.rail .tag em{font-style:normal;color:var(--signal)}
+
+/* stops nav */
+.stops{list-style:none;margin:0;padding:0;position:relative}
+.stops::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:3px;background:var(--rail-line);border-radius:2px}
+.stops li a{position:relative;display:flex;align-items:center;gap:16px;padding:7px 0;color:var(--rail-muted);text-decoration:none;font-weight:600}
+.stops li a::before{content:"";flex:none;width:17px;height:17px;border-radius:50%;background:var(--rail);border:3px solid var(--rail-line);z-index:1;transition:background .2s,border-color .2s}
+.stops li a:hover{color:var(--rail-ink)}
+.stops li a.active{color:#FFFFFF}
+.stops li a.active::before{background:var(--signal);border-color:var(--signal)}
+
+.rail-foot{margin-top:auto;display:grid;gap:14px}
+.rail-links{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--rail-line);color:var(--rail-ink);text-decoration:none;font-size:14px;font-weight:600;background:transparent;cursor:pointer}
+.pill:hover{border-color:var(--signal);color:var(--signal)}
+.pill.solid{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
+.pill.solid:hover{filter:brightness(1.05);color:var(--signal-ink)}
+.mail{font-family:var(--mono);font-size:14px;color:var(--rail-ink);overflow-wrap:anywhere;user-select:all}
+.theme{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--rail-muted)}
+.theme button{background:none;border:1px solid var(--rail-line);color:var(--rail-ink);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.theme button[aria-pressed="true"]{background:var(--rail-ink);color:var(--rail);border-color:var(--rail-ink)}
+
+/* ---------- main ---------- */
+main{min-width:0;padding-block:40px 64px;padding-left:max(16px,clamp(20px,4vw,56px));padding-right:max(16px,env(safe-area-inset-right,0px),clamp(20px,4vw,56px))}
+.col{max-width:1020px}
+section{scroll-margin-top:24px;padding-block:44px;border-top:1px solid var(--rule)}
+section:first-child{border-top:0;padding-top:0}
+.sec-head{display:grid;gap:8px;margin-bottom:28px}
+.sec-head h2{font-size:clamp(30px,4vw,44px);font-weight:900;letter-spacing:-.015em}
+.sec-head p{color:var(--muted);max-width:62ch}
+
+/* ---------- transit lab ---------- */
+.lab-intro{display:grid;gap:12px;margin-bottom:28px}
+.lab-intro h2{font-size:clamp(32px,4.6vw,52px);font-weight:900;letter-spacing:-.02em;max-width:18ch}
+.lab-intro p{max-width:62ch;color:var(--muted)}
+.lab-intro p strong{color:var(--ink)}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px 20px;flex-wrap:wrap}
+.panel-head h3{font-size:20px;font-weight:800}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--rule);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer}
+.seg button:hover{border-color:var(--accent)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.readout{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-top:16px;min-height:44px}
+.readout .big{font-size:34px;font-weight:900;line-height:1}
+.readout .what{color:var(--muted)}
+.readout .share{font-family:var(--mono);font-size:13px;padding:3px 8px;border-radius:4px;background:var(--signal);color:var(--signal-ink)}
+.chart-wrap{overflow-x:auto;margin-top:8px}
+.chart{display:block;width:100%;min-width:520px;height:auto}
+.chart .grid{stroke:var(--rule)}
+.chart .tick{fill:var(--muted);font-family:var(--mono);font-size:11px}
+.chart .bar{fill:var(--bar);cursor:pointer;transition:fill .15s}
+.chart .bar.on{fill:var(--accent)}
+.chart .bar.pick{fill:var(--signal)}
+.chart .hit{fill:transparent;cursor:pointer}
+.chart-note{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* route explorer */
+.explorer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:28px;margin-top:20px}
+.finder label{display:block;font-weight:700;margin-bottom:8px}
+.finder .field{display:flex;gap:8px}
+.finder input{flex:1;min-width:0;font:600 20px var(--display);padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
+.finder input:focus{outline:none;border-color:var(--accent)}
+.finder .hint{font-size:13px;color:var(--muted);margin-top:8px}
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.quick button{min-width:44px;height:36px;padding:0 10px;border-radius:6px;border:0;background:var(--rail);color:#fff;font-weight:800;cursor:pointer}
+.quick button:hover,.quick button[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink)}
+.card-route{display:grid;gap:16px;min-width:0}
+.route-title{display:flex;align-items:center;gap:14px}
+.route-title .plate{display:inline-grid;place-items:center;min-width:56px;height:56px;padding:0 10px;border-radius:10px;background:var(--rail);color:#fff;font-size:26px;font-weight:900}
+.route-title p{color:var(--muted);font-size:15px}
+.route-title strong{display:block;color:var(--ink);font-size:18px}
+.days{display:grid;gap:8px}
+.day{display:grid;grid-template-columns:80px minmax(0,1fr) 46px;gap:10px;align-items:center;font-size:14px}
+.day .track{height:14px;border-radius:4px;background:var(--bg);border:1px solid var(--rule);overflow:hidden}
+.day .fill{height:100%;background:var(--accent);border-radius:3px;transition:width .35s ease}
+@media (prefers-reduced-motion:reduce){.day .fill{transition:none}}
+.day .n{font-family:var(--mono);text-align:right}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fact{border-top:3px solid var(--signal);padding-top:8px;min-width:0}
+.fact b{display:block;font-size:20px;font-weight:800;line-height:1.2}
+.fact span{font-size:13px;color:var(--muted)}
+.notfound{color:var(--muted)}
+
+/* ---------- projects ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.filters button{border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:600;font-size:14px;cursor:pointer}
+.filters button:hover{border-color:var(--accent)}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.filters .count{font-family:var(--mono);font-size:12px;opacity:.75;margin-left:4px}
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.proj{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.proj.featured{grid-column:1/-1}
+.proj-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.proj h3{font-size:22px;font-weight:800}
+.proj.featured h3{font-size:28px}
+.metric{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+.proj details{border-top:1px solid var(--rule);padding-top:10px}
+.proj summary{cursor:pointer;font-weight:700;color:var(--accent);list-style:none;display:inline-flex;align-items:center;gap:8px}
+.proj summary::-webkit-details-marker{display:none}
+.proj summary::before{content:"+";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;font-size:14px;line-height:1}
+.proj details[open] summary::before{content:"–"}
+.proj details ul{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;font-size:16px}
+.proj .links{display:flex;gap:16px;flex-wrap:wrap;margin-top:auto;font-weight:700;font-size:15px}
+.proj[hidden]{display:none}
+.featured-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px}
+.mini-stats{display:grid;gap:14px;align-content:start}
+.mini-stats div{border-left:4px solid var(--signal);padding-left:12px}
+.mini-stats b{display:block;font-size:30px;font-weight:900;line-height:1.05}
+.mini-stats span{font-size:14px;color:var(--muted)}
+.empty-msg{color:var(--muted)}
+
+/* ---------- timeline ---------- */
+.timeline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.tl h3.col-h{font-size:14px;font-family:var(--mono);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.tl ol{list-style:none;margin:0;padding:0;position:relative}
+.tl ol::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:3px;background:var(--rule);border-radius:2px}
+.tl ol>li{position:relative;padding-left:34px;padding-bottom:26px}
+.tl ol>li:last-child{padding-bottom:0}
+.tl ol>li::before{content:"";position:absolute;left:0;top:5px;width:17px;height:17px;border-radius:50%;background:var(--panel);border:3px solid var(--accent)}
+.tl ol>li.now::before{background:var(--signal);border-color:var(--signal)}
+.tl .when{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.tl h4{margin:2px 0 0;font-size:20px;font-weight:800;line-height:1.2}
+.tl .org{font-weight:600;color:var(--accent)}
+.tl ul{margin:8px 0 0;padding-left:18px;font-size:16px;display:grid;gap:4px}
+
+/* ---------- skills ---------- */
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.skill-group h3{font-size:16px;font-weight:800;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button,.chips span{border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;font-size:14px;font-weight:600}
+.chips button{cursor:pointer;border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.chips button:hover{border-color:var(--accent);color:var(--accent)}
+.skills-note{font-size:14px;color:var(--muted);margin-top:16px}
+
+/* ---------- contact ---------- */
+.contact{background:var(--rail);color:var(--rail-ink);border-radius:14px;padding:32px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 32px;align-items:center}
+.contact h2{font-size:clamp(28px,3.6vw,40px);font-weight:900;color:#fff}
+.contact p{color:var(--rail-muted);margin-top:8px;max-width:52ch}
+.contact .mail{font-size:18px;display:block;margin-top:14px}
+.contact .rail-links{justify-content:flex-end}
+.copy-msg{font-size:13px;color:var(--signal);min-height:18px}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .shell{grid-template-columns:minmax(0,1fr);background:var(--bg)}
+  .rail{position:relative;height:auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 22px max(16px,env(safe-area-inset-left,0px));gap:18px}
+  .rail h1{font-size:38px}
+  .stops{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+  .stops::before{display:none}
+  .stops li a{padding:6px 12px;border:1px solid var(--rail-line);border-radius:999px;white-space:nowrap;gap:8px;font-size:14px}
+  .stops li a::before{width:10px;height:10px;border-width:2px}
+  .rail-foot{margin-top:0}
+  main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+@media (max-width:760px){
+  .explorer,.projects,.featured-grid,.timeline,.contact{grid-template-columns:minmax(0,1fr)}
+  .skills{grid-template-columns:minmax(0,1fr)}
+  .contact .rail-links{justify-content:flex-start}
+  .facts{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .panel,.proj{padding:18px}
+  .contact{padding:24px}
+}
+</style>
+<style>html,body{margin:0;height:100%}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="rail" aria-label="About George">
+    <div class="who">
+      <span class="route-badge"><b>G</b>Ottawa, Ontario</span>
+      <h1>George Alaneme</h1>
+      <p class="tag">Data analytics student at Carleton University. I turn messy public data into <em>clear answers</em> with Python, SQL and dashboards.</p>
+    </div>
+
+    <nav aria-label="Sections">
+      <ol class="stops">
+        <li><a href="#lab" data-stop="lab">Transit lab</a></li>
+        <li><a href="#projects" data-stop="projects">Projects</a></li>
+        <li><a href="#experience" data-stop="experience">Experience</a></li>
+        <li><a href="#skills" data-stop="skills">Skills</a></li>
+        <li><a href="#contact" data-stop="contact">Contact</a></li>
+      </ol>
+    </nav>
+
+    <div class="rail-foot">
+      <div class="rail-links">
+        <a class="pill solid" href="https://www.linkedin.com/in/george-alaneme-45285b286" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pill" href="https://github.com/Gerno05" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <span class="mail">geoalams@gmail.com</span>
+      <div class="theme" role="group" aria-label="Colour theme">
+        <span>Theme</span>
+        <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="col">
+
+      <section id="lab" data-section="lab">
+        <div class="lab-intro">
+          <span class="eyebrow">Transit lab · from my OC Transpo SQL project</span>
+          <h2>How Ottawa's transit runs, hour by hour</h2>
+          <p>I loaded OC Transpo's public schedule, <strong>3.8 million stop times</strong>, into PostgreSQL and asked it questions in SQL. Explore a weekday (Wednesday, Nov 4, 2026) below, then look up any route.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Departures across the network</h3>
+            <div class="seg" role="group" aria-label="Highlight part of the day" id="periods">
+              <button type="button" data-period="all" aria-pressed="true">All day</button>
+              <button type="button" data-period="am" aria-pressed="false">Morning rush</button>
+              <button type="button" data-period="mid" aria-pressed="false">Midday</button>
+              <button type="button" data-period="pm" aria-pressed="false">Evening rush</button>
+              <button type="button" data-period="late" aria-pressed="false">Late night</button>
+            </div>
+          </div>
+          <div class="readout" aria-live="polite" id="readout">
+            <span class="big num" id="ro-num">310,788</span>
+            <span class="what" id="ro-what">departures over the whole service day</span>
+            <span class="share num" id="ro-share">100% of the day</span>
+          </div>
+          <div class="chart-wrap">
+<svg viewBox="0 0 760 250" class="chart" role="img" aria-labelledby="hc-t hc-d">
+<title id="hc-t">OC Transpo weekday departures by hour</title>
+<desc id="hc-d">Departures rise to 21,819 between 7 and 8am, dip to about 15,900 an hour at midday, and peak again at 20,794 between 5 and 6pm.</desc>
+<line x1="44" x2="752" y1="220.0" y2="220.0" class="grid" stroke-width="1"/>
+<text x="36" y="224.0" class="tick" text-anchor="end">0k</text>
+<line x1="44" x2="752" y1="178.8" y2="178.8" class="grid" stroke-width="1"/>
+<text x="36" y="182.8" class="tick" text-anchor="end">5k</text>
+<line x1="44" x2="752" y1="137.6" y2="137.6" class="grid" stroke-width="1"/>
+<text x="36" y="141.6" class="tick" text-anchor="end">10k</text>
+<line x1="44" x2="752" y1="96.4" y2="96.4" class="grid" stroke-width="1"/>
+<text x="36" y="100.4" class="tick" text-anchor="end">15k</text>
+<line x1="44" x2="752" y1="55.2" y2="55.2" class="grid" stroke-width="1"/>
+<text x="36" y="59.2" class="tick" text-anchor="end">20k</text>
+<line x1="44" x2="752" y1="14.0" y2="14.0" class="grid" stroke-width="1"/>
+<text x="36" y="18.0" class="tick" text-anchor="end">25k</text>
+<rect class="bar" data-h="3" data-v="227" x="47.7" y="218.1" width="21.0" height="1.9" rx="2"/>
+<rect class="bar" data-h="4" data-v="1745" x="76.0" y="205.6" width="21.0" height="14.4" rx="2"/>
+<rect class="bar" data-h="5" data-v="6596" x="104.3" y="165.6" width="21.0" height="54.4" rx="2"/>
+<rect class="bar" data-h="6" data-v="15893" x="132.6" y="89.0" width="21.0" height="131.0" rx="2"/>
+<rect class="bar" data-h="7" data-v="21819" x="161.0" y="40.2" width="21.0" height="179.8" rx="2"/>
+<rect class="bar" data-h="8" data-v="21801" x="189.3" y="40.4" width="21.0" height="179.6" rx="2"/>
+<rect class="bar" data-h="9" data-v="17543" x="217.6" y="75.4" width="21.0" height="144.6" rx="2"/>
+<rect class="bar" data-h="10" data-v="16378" x="245.9" y="85.0" width="21.0" height="135.0" rx="2"/>
+<rect class="bar" data-h="11" data-v="15908" x="274.2" y="88.9" width="21.0" height="131.1" rx="2"/>
+<rect class="bar" data-h="12" data-v="15925" x="302.6" y="88.8" width="21.0" height="131.2" rx="2"/>
+<rect class="bar" data-h="13" data-v="15787" x="330.9" y="89.9" width="21.0" height="130.1" rx="2"/>
+<rect class="bar" data-h="14" data-v="17296" x="359.2" y="77.5" width="21.0" height="142.5" rx="2"/>
+<rect class="bar" data-h="15" data-v="20436" x="387.5" y="51.6" width="21.0" height="168.4" rx="2"/>
+<rect class="bar" data-h="16" data-v="20086" x="415.8" y="54.5" width="21.0" height="165.5" rx="2"/>
+<rect class="bar" data-h="17" data-v="20794" x="444.2" y="48.7" width="21.0" height="171.3" rx="2"/>
+<rect class="bar" data-h="18" data-v="18819" x="472.5" y="64.9" width="21.0" height="155.1" rx="2"/>
+<rect class="bar" data-h="19" data-v="14503" x="500.8" y="100.5" width="21.0" height="119.5" rx="2"/>
+<rect class="bar" data-h="20" data-v="12833" x="529.1" y="114.3" width="21.0" height="105.7" rx="2"/>
+<rect class="bar" data-h="21" data-v="12052" x="557.4" y="120.7" width="21.0" height="99.3" rx="2"/>
+<rect class="bar" data-h="22" data-v="9914" x="585.8" y="138.3" width="21.0" height="81.7" rx="2"/>
+<rect class="bar" data-h="23" data-v="7416" x="614.1" y="158.9" width="21.0" height="61.1" rx="2"/>
+<rect class="bar" data-h="24" data-v="4386" x="642.4" y="183.9" width="21.0" height="36.1" rx="2"/>
+<rect class="bar" data-h="25" data-v="1584" x="670.7" y="206.9" width="21.0" height="13.1" rx="2"/>
+<rect class="bar" data-h="26" data-v="771" x="699.0" y="213.6" width="21.0" height="6.4" rx="2"/>
+<rect class="bar" data-h="27" data-v="276" x="727.4" y="217.7" width="21.0" height="2.3" rx="2"/>
+<rect class="hit" data-h="3" x="44.0" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="3am to 4am: 227 departures"/>
+<rect class="hit" data-h="4" x="72.3" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="4am to 5am: 1,745 departures"/>
+<rect class="hit" data-h="5" x="100.6" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="5am to 6am: 6,596 departures"/>
+<rect class="hit" data-h="6" x="129.0" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="6am to 7am: 15,893 departures"/>
+<rect class="hit" data-h="7" x="157.3" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="7am to 8am: 21,819 departures"/>
+<rect class="hit" data-h="8" x="185.6" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="8am to 9am: 21,801 departures"/>
+<rect class="hit" data-h="9" x="213.9" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="9am to 10am: 17,543 departures"/>
+<rect class="hit" data-h="10" x="242.2" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="10am to 11am: 16,378 departures"/>
+<rect class="hit" data-h="11" x="270.6" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="11am to 12pm: 15,908 departures"/>
+<rect class="hit" data-h="12" x="298.9" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="12pm to 1pm: 15,925 departures"/>
+<rect class="hit" data-h="13" x="327.2" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="1pm to 2pm: 15,787 departures"/>
+<rect class="hit" data-h="14" x="355.5" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="2pm to 3pm: 17,296 departures"/>
+<rect class="hit" data-h="15" x="383.8" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="3pm to 4pm: 20,436 departures"/>
+<rect class="hit" data-h="16" x="412.2" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="4pm to 5pm: 20,086 departures"/>
+<rect class="hit" data-h="17" x="440.5" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="5pm to 6pm: 20,794 departures"/>
+<rect class="hit" data-h="18" x="468.8" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="6pm to 7pm: 18,819 departures"/>
+<rect class="hit" data-h="19" x="497.1" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="7pm to 8pm: 14,503 departures"/>
+<rect class="hit" data-h="20" x="525.4" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="8pm to 9pm: 12,833 departures"/>
+<rect class="hit" data-h="21" x="553.8" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="9pm to 10pm: 12,052 departures"/>
+<rect class="hit" data-h="22" x="582.1" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="10pm to 11pm: 9,914 departures"/>
+<rect class="hit" data-h="23" x="610.4" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="11pm to 12am: 7,416 departures"/>
+<rect class="hit" data-h="24" x="638.7" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="12am to 1am: 4,386 departures"/>
+<rect class="hit" data-h="25" x="667.0" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="1am to 2am: 1,584 departures"/>
+<rect class="hit" data-h="26" x="695.4" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="2am to 3am: 771 departures"/>
+<rect class="hit" data-h="27" x="723.7" y="14" width="28.3" height="206" tabindex="0" role="button" aria-label="3am to 4am: 276 departures"/>
+<text x="86.5" y="242" class="tick" text-anchor="middle">4am</text>
+<text x="199.8" y="242" class="tick" text-anchor="middle">8am</text>
+<text x="313.0" y="242" class="tick" text-anchor="middle">noon</text>
+<text x="426.3" y="242" class="tick" text-anchor="middle">4pm</text>
+<text x="539.6" y="242" class="tick" text-anchor="middle">8pm</text>
+<text x="652.9" y="242" class="tick" text-anchor="middle">midnight</text>
+</svg>
+          </div>
+          <p class="chart-note">Tap or hover a bar to see that hour. The service day runs past midnight, so the last bars are early-morning trips.</p>
+        </div>
+
+        <div class="panel" style="margin-top:18px">
+          <div class="explorer">
+            <div class="finder">
+              <label for="route-input">Look up a route</label>
+              <form class="field" id="route-form" autocomplete="off">
+                <input id="route-input" name="route" list="route-list" inputmode="text" placeholder="e.g. 75" value="1" aria-describedby="route-hint">
+              </form>
+              <datalist id="route-list"></datalist>
+              <p class="hint" id="route-hint">Type a route number. School routes (600s) are left out, as in the analysis.</p>
+              <div class="quick" id="quick" aria-label="Popular routes">
+                <button type="button" data-r="1">1</button>
+                <button type="button" data-r="75">75</button>
+                <button type="button" data-r="2">2</button>
+                <button type="button" data-r="7">7</button>
+                <button type="button" data-r="39">39</button>
+                <button type="button" data-r="80">80</button>
+                <button type="button" data-r="105">105</button>
+              </div>
+            </div>
+            <div class="card-route" id="route-card" aria-live="polite">
+              <div class="route-title">
+                <span class="plate" id="rc-plate">1</span>
+                <p><strong id="rc-head">409 weekday trips</strong><span id="rc-sub">Busiest of 118 routes</span></p>
+              </div>
+              <div class="days" id="rc-days">
+                <div class="day"><span>Weekday</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="n num">409</span></div>
+                <div class="day"><span>Saturday</span><div class="track"><div class="fill" style="width:68%"></div></div><span class="n num">278</span></div>
+                <div class="day"><span>Sunday</span><div class="track"><div class="fill" style="width:51%"></div></div><span class="n num">209</span></div>
+              </div>
+              <div class="facts">
+                <div class="fact"><b id="rc-peak">4 min</b><span>wait at morning rush</span></div>
+                <div class="fact"><b id="rc-span">20.1 h</b><span>of service a day</span></div>
+                <div class="fact"><b id="rc-last">1:03am</b><span>last departure</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" data-section="projects">
+        <div class="sec-head">
+          <span class="eyebrow">Projects</span>
+          <h2>Things I've built</h2>
+          <p>Filter by tool, and open a project for the details. All code is on GitHub.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filter projects by tool" id="filters">
+          <button type="button" data-f="all" aria-pressed="true">All<span class="count">5</span></button>
+          <button type="button" data-f="sql" aria-pressed="false">SQL</button>
+          <button type="button" data-f="python" aria-pressed="false">Python</button>
+          <button type="button" data-f="tableau" aria-pressed="false">Tableau</button>
+          <button type="button" data-f="django" aria-pressed="false">Django</button>
+        </div>
+
+        <div class="projects" id="project-list">
+          <article class="proj featured" data-tags="sql python">
+            <div class="featured-grid">
+              <div style="display:grid;gap:12px;min-width:0">
+                <span class="eyebrow">Featured · SQL analysis</span>
+                <h3>OC Transpo Service Analysis</h3>
+                <div class="tags"><span>PostgreSQL</span><span>SQL</span><span>Python</span><span>pgAdmin</span><span>Git</span></div>
+                <p>How is Ottawa's bus and train service spread across the city and the week? A Python script loads the GTFS feed into PostgreSQL, and ten SQL queries answer questions about frequency, busy stops, weekend cuts and late-night gaps. The transit lab above runs on its results.</p>
+                <details>
+                  <summary>How I built it</summary>
+                  <ul>
+                    <li>One-step loader: 175 routes, 5,833 stops, 94,115 trips and about 3.8 million stop times.</li>
+                    <li>Converted GTFS times past 24:00 to seconds since midnight so they sort correctly.</li>
+                    <li>Wrote a <code>service_ids_on(date)</code> function to handle the weekly calendar plus holiday exceptions.</li>
+                    <li>Estimated missing stop times by spacing them between known stops.</li>
+                    <li>Used LAG() for the gap between buses and FILTER to count weekday vs weekend trips in one pass; left out school routes that skewed the averages.</li>
+                  </ul>
+                </details>
+                <div class="links"><a href="https://github.com/Gerno05/octranspo-sql-analysis" target="_blank" rel="noopener">Code and findings</a></div>
+              </div>
+              <div class="mini-stats">
+                <div><b class="num">7 of 180</b><span>route directions come every 10 minutes or better at morning rush</span></div>
+                <div><b class="num">56%</b><span>of weekday trips still run on Sunday</span></div>
+                <div><b class="num">46</b><span>of 118 regular routes don't run on weekends</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="proj" data-tags="python tableau">
+            <span class="eyebrow">Data analysis · dashboard</span>
+            <h3>Global Energy &amp; CO₂ Emissions</h3>
+            <span class="metric num">55,440 rows · 202 countries · 1980–2019</span>
+            <div class="tags"><span>Python</span><span>Pandas</span><span>Matplotlib</span><span>Tableau</span></div>
+            <p>Are rising energy use and CO₂ emissions linked to rising temperatures? I merged EIA energy data with World Bank temperature data, with a focus on the US and Canada.</p>
+            <details>
+              <summary>Details</summary>
+              <ul>
+                <li>Cleaned the energy data from 55,440 rows to 41,920 and removed the World aggregate rows.</li>
+                <li>Merged it with temperature data into 8,080 rows: 202 countries × 40 years, 163 with temperature data.</li>
+                <li>Built interactive Tableau dashboards and charts in four Jupyter notebooks.</li>
+              </ul>
+            </details>
+            <div class="links"><a href="https://gerno05.github.io/Energy/" target="_blank" rel="noopener">Live project</a><a href="https://github.com/Gerno05/Energy" target="_blank" rel="noopener">Code</a></div>
+          </article>
+
+          <article class="proj" data-tags="python sql">
+            <span class="eyebrow">Data cleaning</span>
+            <h3>Rental Market Analysis</h3>
+            <span class="metric num">1,401 census tracts · 11 → 7 columns</span>
+            <div class="tags"><span>Python</span><span>Pandas</span><span>SQL</span><span>Excel</span></div>
+            <p>A reproducible cleaning pipeline for 2018 census rental data, ready for analysis of rent by bedroom count and dwelling type.</p>
+            <details>
+              <summary>Details</summary>
+              <ul>
+                <li>Removed commas and dashes from numeric values and fixed string columns stored as text.</li>
+                <li>Standardized column names with a custom function and dropped unneeded columns.</li>
+                <li>Used SQL and Excel to explore pricing by area.</li>
+              </ul>
+            </details>
+            <div class="links"><a href="https://github.com/Gerno05/RENTAL" target="_blank" rel="noopener">Code</a></div>
+          </article>
+
+          <article class="proj" data-tags="python">
+            <span class="eyebrow">Data cleaning</span>
+            <h3>Bike Thefts Data Cleaning</h3>
+            <span class="metric num">13,995 reports · 28 columns</span>
+            <div class="tags"><span>Python</span><span>Pandas</span><span>Jupyter</span></div>
+            <p>Prepared a raw dataset of reported bike thefts so it can be analyzed by time of day, value and location.</p>
+            <details>
+              <summary>Details</summary>
+              <ul>
+                <li>Dropped a column that was completely empty.</li>
+                <li>Filled about 6,000 missing bike values with the median ($600) instead of losing those rows.</li>
+                <li>Removed about 500 rows with no time of theft and trimmed whitespace in text fields.</li>
+              </ul>
+            </details>
+            <div class="links"><a href="https://github.com/Gerno05/BIKE-THEFTS" target="_blank" rel="noopener">Code</a></div>
+          </article>
+
+          <article class="proj" data-tags="python django sql">
+            <span class="eyebrow">Web app</span>
+            <h3>Job Application Tracker</h3>
+            <span class="metric">Full-stack · user accounts</span>
+            <div class="tags"><span>Python</span><span>Django</span><span>SQL</span><span>HTML/CSS</span></div>
+            <p>A web app for students to track internship applications, interviews and offers in one place.</p>
+            <details>
+              <summary>Details</summary>
+              <ul>
+                <li>Sign-in and sign-up with Django authentication.</li>
+                <li>Relational database built on the Django ORM, with each application tracked by status.</li>
+              </ul>
+            </details>
+            <div class="links"><a href="https://github.com/Gerno05/Job-Application-Tracker" target="_blank" rel="noopener">Code</a></div>
+          </article>
+        </div>
+        <p class="empty-msg" id="empty-msg" hidden>No projects use that tool yet.</p>
+      </section>
+
+      <section id="experience" data-section="experience">
+        <div class="sec-head">
+          <span class="eyebrow">Experience &amp; education</span>
+          <h2>Where I've been</h2>
+        </div>
+        <div class="timeline">
+          <div class="tl">
+            <h3 class="col-h">Work</h3>
+            <ol>
+              <li class="now">
+                <span class="when">Apr 2026 – Present</span>
+                <h4>Retail Associate</h4>
+                <span class="org">The Home Depot, Ottawa</span>
+                <ul>
+                  <li>Check stock and keep inventory records accurate with handheld devices and the store's inventory system.</li>
+                  <li>Help customers find products and solve problems during busy shifts.</li>
+                </ul>
+              </li>
+              <li>
+                <span class="when">Mar 2026 – Jul 2026</span>
+                <h4>Research Lead</h4>
+                <span class="org">Riipen, Research &amp; Data Analysis Project</span>
+                <ul>
+                  <li>Led a team studying a client's digital outreach and audience reach.</li>
+                  <li>Presented recommendations; the client's main account grew from 472 to 1,750 followers (+271%).</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+          <div class="tl">
+            <h3 class="col-h">Education</h3>
+            <ol>
+              <li class="now">
+                <span class="when">Expected Sep 2028</span>
+                <h4>Bachelor of Information Technology</h4>
+                <span class="org">Carleton University, Ottawa</span>
+                <ul><li>Database and data management, data visualization and analysis (including PyTorch), project management.</li></ul>
+              </li>
+              <li>
+                <span class="when">Certificate</span>
+                <h4>Library Services (Information Resource Management)</h4>
+                <span class="org">Algonquin College, Ottawa</span>
+              </li>
+              <li>
+                <span class="when">2024 – Present</span>
+                <h4>Campus involvement</h4>
+                <span class="org">BIT Club, Nigerian Students' Association</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" data-section="skills">
+        <div class="sec-head">
+          <span class="eyebrow">Skills</span>
+          <h2>What I work with</h2>
+        </div>
+        <div class="skills">
+          <div class="skill-group">
+            <h3>Analysis</h3>
+            <div class="chips">
+              <button type="button" data-skill="python">Python</button><span>Pandas</span><span>NumPy</span><span>Matplotlib</span><span>PyTorch</span><span>Jupyter</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h3>Databases</h3>
+            <div class="chips">
+              <button type="button" data-skill="sql">SQL</button><span>PostgreSQL</span><span>CTEs</span><span>Window functions</span><span>MongoDB</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h3>Dashboards</h3>
+            <div class="chips">
+              <button type="button" data-skill="tableau">Tableau</button><span>Power BI</span><span>Excel pivot tables</span><span>VLOOKUP</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h3>Web</h3>
+            <div class="chips">
+              <button type="button" data-skill="django">Django</button><span>HTML</span><span>CSS</span><span>JavaScript</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h3>Tools</h3>
+            <div class="chips"><span>Git &amp; GitHub</span><span>pgAdmin</span><span>Linux</span><span>Microsoft Office</span><span>Google Workspace</span></div>
+          </div>
+          <div class="skill-group">
+            <h3>Languages</h3>
+            <div class="chips"><span>English (fluent)</span><span>French (proficient)</span></div>
+          </div>
+        </div>
+        <p class="skills-note">Tap a highlighted skill to see the projects that use it.</p>
+      </section>
+
+      <section id="contact" data-section="contact">
+        <div class="contact">
+          <div>
+            <h2>Looking for a 2027 data co-op</h2>
+            <p>I'm open to data analytics, business intelligence and data science roles. Email me or message me on LinkedIn.</p>
+            <span class="mail" id="email-addr">geoalams@gmail.com</span>
+          </div>
+          <div style="display:grid;gap:8px;justify-items:end">
+            <div class="rail-links">
+              <button type="button" class="pill solid" id="copy-email">Copy email</button>
+              <a class="pill" href="mailto:geoalams@gmail.com">Write an email</a>
+              <a class="pill" href="https://www.linkedin.com/in/george-alaneme-45285b286" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+            <span class="copy-msg" id="copy-msg" aria-live="polite"></span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var HOURS = [[3, 227], [4, 1745], [5, 6596], [6, 15893], [7, 21819], [8, 21801], [9, 17543], [10, 16378], [11, 15908], [12, 15925], [13, 15787], [14, 17296], [15, 20436], [16, 20086], [17, 20794], [18, 18819], [19, 14503], [20, 12833], [21, 12052], [22, 9914], [23, 7416], [24, 4386], [25, 1584], [26, 771], [27, 276]];
+  var ROUTES = [["1",409,278,209,"04:59","25:03",20.1,4.0,6.0],["75",192,167,152,"03:02","26:58",23.9,6.8,15.0],["4",184,89,81,"06:07","24:15",18.1,12.0,12.0],["2",184,177,162,"06:00","23:59",18.0,12.0,12.0],["88",167,123,85,"04:16","25:01",20.8,10.6,14.9],["39",163,158,151,"03:23","27:03",23.7,13.3,15.0],["12",152,135,110,"04:02","26:03",22.0,14.9,14.8],["98",150,73,66,"04:55","23:58",19.1,8.6,15.0],["6",148,148,118,"04:35","26:00",21.4,7.5,15.0],["111",146,75,63,"05:11","24:50",19.7,11.8,14.8],["45",146,88,86,"03:58","27:01",23.1,15.0,15.0],["68",144,107,84,"04:29","25:30",21.0,10.6,15.1],["5",139,69,70,"05:25","24:10",18.8,11.5,14.8],["85",137,114,95,"04:17","24:54",20.6,15.1,14.7],["7",133,142,124,"04:30","25:11",20.7,13.1,15.1],["44",132,76,66,"05:00","24:38",19.6,15.0,15.0],["80",131,71,46,"04:44","24:19",19.6,15.1,14.5],["40",130,81,73,"04:38","24:50",20.2,15.0,14.9],["11",129,80,72,"04:26","24:47",20.4,13.2,14.7],["90",126,71,66,"04:13","24:26",20.2,13.2,15.0],["41",126,79,61,"04:15","24:25",20.2,15.0,15.0],["25",123,78,67,"04:25","24:52",20.5,15.1,15.0],["10",121,80,74,"05:26","23:48",18.4,14.4,15.0],["14",121,98,60,"05:51","24:22",18.5,15.3,15.0],["74",119,67,50,"05:45","24:41",18.9,13.6,14.9],["61",116,87,85,"03:54","26:41",22.8,17.6,14.9],["87",107,46,34,"05:59","21:45",15.8,14.3,15.0],["63",105,68,58,"04:57","24:15",19.3,14.9,29.8],["56",101,68,64,"05:59","25:04",19.1,13.3,30.0],["24",101,63,50,"04:55","23:17",18.4,10.7,29.8],["53",100,70,65,"05:30","25:00",19.5,13.3,30.0],["57",100,48,53,"04:57","26:54",22.0,16.9,29.6],["86",99,63,61,"05:01","24:34",19.6,14.9,30.0],["70",98,67,64,"04:39","23:00",18.4,13.7,29.9],["48",97,71,60,"04:20","23:45",19.4,14.6,29.6],["105",97,96,97,"03:10","26:40",23.5,28.8,29.8],["30",78,58,54,"05:09","22:59",17.8,17.3,30.0],["99",76,66,55,"05:26","24:26",19.0,24.0,29.6],["189",75,26,28,"05:05","24:40",19.6,30.0,30.0],["8",75,70,62,"04:37","24:45",20.1,29.5,30.1],["18",75,65,58,"05:04","23:49",18.8,24.4,29.9],["62",75,65,62,"05:24","24:00",18.6,24.8,29.4],["82",74,65,51,"04:53","23:47",18.9,20.0,29.5],["161",73,33,35,"05:22","22:45",17.4,26.0,30.0],["35",73,60,46,"05:38","24:23",18.8,20.2,29.6],["19",73,63,55,"05:35","24:30",18.9,26.5,30.0],["93",72,66,64,"05:11","23:44",18.6,30.0,30.0],["33",72,62,48,"05:13","23:29",18.3,21.7,30.0],["34",72,51,42,"05:29","21:45",16.3,20.0,29.9],["9",71,62,55,"05:30","23:08",17.6,30.0,30.0],["81",71,60,53,"05:31","23:51",18.3,30.0,29.6],["173",71,65,56,"04:45","23:04",18.3,30.0,29.9],["168",71,64,57,"05:16","24:22",19.1,29.3,30.0],["112",71,68,59,"04:53","23:30",18.6,30.0,30.0],["60",70,0,0,"05:30","24:03",18.6,30.0,29.8],["38",70,66,49,"04:36","23:00",18.4,24.4,30.0],["58",69,57,41,"06:09","23:22",17.2,24.2,30.0],["36",69,61,49,"05:00","23:33",18.6,29.4,30.0],["73",67,0,0,"05:15","22:10",16.9,29.8,28.8],["51",67,62,56,"05:35","22:50",17.3,23.6,30.0],["20",67,60,53,"05:10","23:50",18.7,30.0,29.9],["13",67,0,0,"06:14","19:03",12.8,8.6,null],["31",66,67,49,"06:05","22:36",16.5,20.0,30.0],["42",66,50,40,"05:15","21:41",16.4,24.0,29.6],["110",64,12,12,"04:45","20:13",15.5,30.0,29.9],["163",63,51,43,"06:00","22:35",16.6,30.0,30.0],["67",62,48,40,"05:51","21:30",15.7,23.6,30.0],["165",49,32,23,"05:25","22:20",16.9,30.0,60.0],["138",48,32,25,"05:40","23:00",17.3,30.0,59.0],["15",48,0,0,"06:02","18:39",12.6,17.3,null],["162",45,34,32,"06:30","22:18",15.8,30.0,60.0],["92",40,0,0,"06:08","23:00",16.9,30.3,60.0],["116",40,46,41,"05:23","22:36",17.2,40.0,51.0],["26",37,0,0,"05:52","18:12",12.3,30.0,61.7],["43",37,0,0,"06:05","23:30",17.4,37.8,60.0],["E1",36,0,0,"06:30","18:00",11.5,9.3,null],["49",35,20,19,"06:10","22:19",16.2,26.2,90.0],["566",27,0,0,"05:44","18:05",12.4,16.7,null],["226",24,0,0,"05:39","18:03",12.4,15.1,null],["197",23,11,11,"05:33","21:10",15.6,30.0,60.0],["256",19,0,0,"05:14","18:36",13.4,19.8,null],["66",19,0,0,"05:31","18:27",12.9,27.0,null],["153",17,8,8,"08:02","19:26",11.4,null,null],["32",16,0,0,"05:43","18:35",12.9,28.5,null],["47",16,2,2,"05:45","24:50",19.1,28.0,null],["277",14,0,0,"05:55","17:59",12.1,26.5,null],["275",14,0,0,"05:39","17:54",12.3,38.5,null],["265",14,0,0,"05:37","18:32",12.9,31.0,null],["17",13,0,0,"06:00","17:58",12.0,30.0,null],["234",13,0,0,"05:37","18:28",12.9,31.7,null],["94",12,0,0,"05:49","18:25",12.6,30.0,null],["84",12,0,0,"06:00","17:08",11.1,60.5,null],["198",11,0,0,"05:57","18:24",12.5,null,null],["187",10,0,0,"06:38","17:51",11.2,30.0,null],["526",10,0,0,"06:02","17:26",11.4,34.3,null],["299",10,0,0,"06:19","17:55",11.6,17.8,null],["262",9,0,0,"05:30","18:32",13.0,null,null],["294",9,0,0,"06:31","17:39",11.1,30.8,null],["117",9,0,0,"06:26","17:40",11.2,28.0,null],["266",8,0,0,"05:33","18:16",12.7,null,null],["23",8,0,0,"07:04","17:26",10.4,30.0,null],["221",8,0,0,"06:27","17:22",10.9,40.5,null],["237",8,0,0,"05:55","18:22",12.5,45.0,null],["261",8,0,0,"05:42","18:16",12.6,46.5,null],["279",7,0,0,"06:11","18:12",12.0,61.5,null],["263",7,0,0,"05:48","18:16",12.5,null,null],["283",7,0,0,"05:04","18:24",13.3,null,null],["222",6,0,0,"05:55","17:40",11.8,null,null],["228",6,0,0,"05:37","17:39",12.0,null,null],["539",6,0,0,"06:30","18:00",11.5,75.0,null],["21",5,0,0,"07:10","17:06",9.9,45.0,null],["158",4,0,0,"07:41","17:05",9.4,45.0,null],["565",4,0,0,"05:45","16:15",10.5,null,null],["582",4,0,0,"06:44","16:38",9.9,null,null],["561",3,0,0,"07:34","17:10",9.6,null,null],["303",2,0,0,"08:46","14:30",5.7,null,null],["562",2,0,0,"07:46","15:20",7.6,null,null],["563",2,0,0,"06:53","15:54",9.0,null,null]];
+  var TOTAL = HOURS.reduce(function(s,d){return s+d[1]},0);
+  var fmt = function(n){return n.toLocaleString('en-CA')};
+  function hourLabel(h){var x=h%24, ap=x<12?'am':'pm', y=x%12===0?12:x%12; return y+ap;}
+  function timeLabel(t){ if(!t) return '—'; var p=t.split(':'), h=+p[0], m=p[1]; var x=h%24, ap=x<12?'am':'pm', y=x%12===0?12:x%12; return y+':'+m+ap; }
+
+  /* ---- hourly chart ---- */
+  var PERIODS = {
+    all:{hours:null, text:'departures over the whole service day'},
+    am:{hours:[7,8], text:'departures in the morning rush, 7 to 9am'},
+    mid:{hours:[10,11,12,13], text:'departures at midday, 10am to 2pm'},
+    pm:{hours:[15,16,17], text:'departures in the evening rush, 3 to 6pm'},
+    late:{hours:[22,23,24,25,26,27], text:'departures late at night, 10pm to 4am'}
+  };
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.chart .bar'));
+  var ro = {num:document.getElementById('ro-num'), what:document.getElementById('ro-what'), share:document.getElementById('ro-share')};
+  var current = 'all';
+  function showPeriod(key){
+    current = key; var p = PERIODS[key];
+    var sum = 0;
+    bars.forEach(function(b){var h=+b.dataset.h, on=!p.hours||p.hours.indexOf(h)>-1; b.classList.toggle('on', !!p.hours && on); b.classList.remove('pick'); if(on) sum+=+b.dataset.v;});
+    var hrs = p.hours ? p.hours.length : HOURS.length;
+    ro.num.textContent = fmt(sum);
+    ro.what.textContent = p.text + (p.hours ? ' (about '+fmt(Math.round(sum/hrs/100)*100)+' an hour)' : '');
+    ro.share.textContent = Math.round(sum/TOTAL*1000)/10 + '% of the day';
+    document.querySelectorAll('#periods button').forEach(function(btn){btn.setAttribute('aria-pressed', btn.dataset.period===key?'true':'false');});
+  }
+  function showHour(h){
+    var d = HOURS.filter(function(x){return x[0]===h})[0]; if(!d) return;
+    bars.forEach(function(b){b.classList.toggle('pick', +b.dataset.h===h);});
+    ro.num.textContent = fmt(d[1]);
+    ro.what.textContent = 'departures between ' + hourLabel(h) + ' and ' + hourLabel(h+1);
+    ro.share.textContent = Math.round(d[1]/TOTAL*1000)/10 + '% of the day';
+  }
+  document.getElementById('periods').addEventListener('click', function(e){var b=e.target.closest('button'); if(b) showPeriod(b.dataset.period);});
+  document.querySelectorAll('.chart [data-h]').forEach(function(el){
+    var h=+el.dataset.h;
+    el.addEventListener('mouseenter', function(){showHour(h)});
+    el.addEventListener('click', function(){showHour(h)});
+    el.addEventListener('focus', function(){showHour(h)});
+    el.addEventListener('keydown', function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();showHour(h);}});
+  });
+  document.querySelector('.chart').addEventListener('mouseleave', function(){showPeriod(current)});
+
+  /* ---- route explorer ---- */
+  var byRoute = {}; ROUTES.forEach(function(r){byRoute[String(r[0]).toUpperCase()]=r;});
+  var dl = document.getElementById('route-list');
+  ROUTES.slice().sort(function(a,b){return String(a[0]).localeCompare(String(b[0]),'en',{numeric:true})}).forEach(function(r){var o=document.createElement('option'); o.value=r[0]; dl.appendChild(o);});
+  var rank = ROUTES.slice().sort(function(a,b){return b[1]-a[1]}).map(function(r){return String(r[0])});
+  var card = {plate:document.getElementById('rc-plate'), head:document.getElementById('rc-head'), sub:document.getElementById('rc-sub'), days:document.getElementById('rc-days'), peak:document.getElementById('rc-peak'), span:document.getElementById('rc-span'), last:document.getElementById('rc-last')};
+  function ordinal(n){var s=['th','st','nd','rd'], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]);}
+  function showRoute(q){
+    var key = String(q||'').trim().toUpperCase(); var r = byRoute[key];
+    document.querySelectorAll('#quick button').forEach(function(b){b.setAttribute('aria-pressed', b.dataset.r.toUpperCase()===key?'true':'false');});
+    if(!r){
+      card.plate.textContent = key || '?';
+      card.head.textContent = key ? 'No route ' + key + ' in the data' : 'Type a route number';
+      card.sub.textContent = 'Try one of the popular routes on the left.';
+      return;
+    }
+    var wk=r[1], sat=r[2], sun=r[3], max=Math.max(wk,sat,sun,1);
+    card.plate.textContent = r[0];
+    card.head.textContent = fmt(wk) + ' weekday trips';
+    var pos = rank.indexOf(String(r[0]))+1;
+    var sub = (pos===1 ? 'Busiest' : ordinal(pos) + ' busiest') + ' of ' + ROUTES.length + ' routes';
+    if(sat===0 && sun===0) sub += ' · weekdays only';
+    else sub += ' · Sunday runs ' + Math.round(sun/wk*100) + '% of weekday';
+    card.sub.textContent = sub;
+    var vals=[wk,sat,sun];
+    card.days.querySelectorAll('.day').forEach(function(row,i){row.querySelector('.fill').style.width=(vals[i]/max*100)+'%'; row.querySelector('.n').textContent=fmt(vals[i]);});
+    card.peak.textContent = r[7]!=null ? Math.round(r[7]*10)/10 + ' min' : '—';
+    card.span.textContent = r[6]!=null ? r[6] + ' h' : '—';
+    card.last.textContent = timeLabel(r[5]);
+  }
+  var input = document.getElementById('route-input');
+  input.addEventListener('input', function(){ if(byRoute[input.value.trim().toUpperCase()]) showRoute(input.value); });
+  document.getElementById('route-form').addEventListener('submit', function(e){e.preventDefault(); showRoute(input.value);});
+  input.addEventListener('change', function(){showRoute(input.value)});
+  document.getElementById('quick').addEventListener('click', function(e){var b=e.target.closest('button'); if(!b) return; input.value=b.dataset.r; showRoute(b.dataset.r);});
+  showRoute('1');
+
+  /* ---- project filter ---- */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#project-list .proj'));
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('#filters button'));
+  filterBtns.forEach(function(b){ if(b.dataset.f==='all') return; var n=cards.filter(function(c){return c.dataset.tags.split(' ').indexOf(b.dataset.f)>-1}).length; var s=document.createElement('span'); s.className='count'; s.textContent=n; b.appendChild(s); });
+  function filter(f){
+    var shown=0;
+    cards.forEach(function(c){var ok = f==='all' || c.dataset.tags.split(' ').indexOf(f)>-1; c.hidden=!ok; if(ok) shown++;});
+    filterBtns.forEach(function(b){b.setAttribute('aria-pressed', b.dataset.f===f?'true':'false');});
+    document.getElementById('empty-msg').hidden = shown>0;
+  }
+  document.getElementById('filters').addEventListener('click', function(e){var b=e.target.closest('button'); if(b) filter(b.dataset.f);});
+  document.querySelectorAll('[data-skill]').forEach(function(b){b.addEventListener('click', function(){filter(b.dataset.skill); document.getElementById('projects').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});
+
+  /* ---- section stops ---- */
+  var links = {}; document.querySelectorAll('.stops a').forEach(function(a){links[a.dataset.stop]=a;});
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ Object.keys(links).forEach(function(k){links[k].classList.toggle('active', k===en.target.dataset.section);}); } });
+    }, {rootMargin:'-35% 0px -60% 0px'});
+    document.querySelectorAll('[data-section]').forEach(function(s){io.observe(s)});
+  }
+  links.lab.classList.add('active');
+
+  /* ---- theme ---- */
+  var root=document.documentElement;
+  function setTheme(t){
+    if(t==='auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    document.querySelectorAll('[data-theme-set]').forEach(function(b){b.setAttribute('aria-pressed', b.dataset.themeSet===t?'true':'false');});
+    try{ localStorage.setItem('ga-theme', t); }catch(e){}
+  }
+  var saved=null; try{ saved=localStorage.getItem('ga-theme'); }catch(e){}
+  if(saved==='light'||saved==='dark') setTheme(saved);
+  document.querySelectorAll('[data-theme-set]').forEach(function(b){b.addEventListener('click', function(){setTheme(b.dataset.themeSet)});});
+
+  /* ---- copy email ---- */
+  var msg=document.getElementById('copy-msg');
+  document.getElementById('copy-email').addEventListener('click', function(){
+    var addr='geoalams@gmail.com';
+    function fallback(){var r=document.createRange(); r.selectNodeContents(document.getElementById('email-addr')); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Email selected. Press Ctrl+C or Cmd+C to copy.';}
+    try{ navigator.clipboard.writeText(addr).then(function(){msg.textContent='Email copied.';}, fallback); }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
